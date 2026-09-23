@@ -15,14 +15,25 @@ client.interceptors.request.use((config) => {
   return config;
 });
 
+function getErrorMessage(value) {
+  if (typeof value === "string" && value.trim()) return value;
+  if (value && typeof value === "object") {
+    for (const key of ["message", "error", "detail", "title"]) {
+      const message = getErrorMessage(value[key]);
+      if (message) return message;
+    }
+  }
+  return "";
+}
+
 // Normalize errors so callers always get a readable message string.
 function unwrap(promise) {
   return promise
     .then((res) => res.data)
     .catch((err) => {
       const message =
-        err.response?.data?.error ||
-        err.message ||
+        getErrorMessage(err.response?.data) ||
+        getErrorMessage(err.message) ||
         "Something went wrong. Please try again.";
       const wrapped = new Error(message);
       wrapped.status = err.response?.status;

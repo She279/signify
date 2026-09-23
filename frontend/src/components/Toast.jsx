@@ -16,6 +16,19 @@ const TONES = {
   info: "border-brand-300/50 text-brand-700 dark:text-brand-300",
 };
 
+function displayMessage(message) {
+  if (typeof message === "string") return message;
+  if (message && typeof message === "object") {
+    return (
+      displayMessage(message.message) ||
+      displayMessage(message.error) ||
+      displayMessage(message.detail) ||
+      "Something went wrong. Please try again."
+    );
+  }
+  return "";
+}
+
 export function ToastProvider({ children }) {
   const [toasts, setToasts] = useState([]);
 
@@ -53,7 +66,7 @@ export function ToastProvider({ children }) {
                 role="status"
               >
                 <Icon size={18} className="mt-0.5 shrink-0" />
-                <p className="flex-1 text-sm text-ink">{t.message}</p>
+                <p className="flex-1 text-sm text-ink">{displayMessage(t.message)}</p>
                 <button
                   onClick={() => dismiss(t.id)}
                   aria-label="Dismiss notification"
