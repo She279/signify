@@ -111,6 +111,27 @@ The app opens at **http://localhost:5173**.
 
 Leave both terminals running while you use the app.
 
+### Deploying the full app to Vercel
+
+This repository includes a Vercel Python function for the Flask API, so the
+Vercel project must use the repository root as its **Root Directory**. Do not
+set the Root Directory to `frontend`.
+
+1. Import the repository into Vercel and set **Root Directory** to `.`.
+2. Set these environment variables in Vercel:
+
+  ```
+  SECRET_KEY=<long-random-value>
+  JWT_SECRET=<different-long-random-value>
+  CORS_ORIGINS=https://your-project.vercel.app
+  ```
+
+3. Deploy. The frontend uses the same-origin API automatically, so leave
+  `VITE_API_URL` empty for this setup.
+
+For a separately hosted backend, set `VITE_API_URL` to its public HTTPS URL
+and set `CORS_ORIGINS` to the exact frontend URL instead.
+
 ---
 
 ## 4. How it all fits together (for beginners)
