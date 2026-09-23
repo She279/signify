@@ -25,7 +25,11 @@ class Config:
     JWT_EXPIRES = timedelta(days=7)
 
     # CORS
-    CORS_ORIGINS = os.environ.get("CORS_ORIGINS", "http://localhost:5173").split(",")
+    CORS_ORIGINS = [
+        origin.strip().rstrip("/")
+        for origin in os.environ.get("CORS_ORIGINS", "http://localhost:5173").split(",")
+        if origin.strip()
+    ]
 
     # ML model path
     MODEL_PATH = os.path.join(BASE_DIR, "ml", "model", "sign_model.pkl")

@@ -189,12 +189,12 @@ curl -X POST http://localhost:5000/api/predict \
 
 | Problem | Fix |
 |---|---|
-| Frontend shows network errors on login/predict | Make sure the backend is running on port 5000, and `frontend/.env` has `VITE_API_URL=http://localhost:5000`. |
+| Frontend shows network errors on login/predict | For local development, run the backend on port 5000. For deployment, set `frontend/.env` to the public backend URL with `VITE_API_URL=https://api.example.com`, then rebuild the frontend. If both apps share one origin, leave `VITE_API_URL` empty. |
 | "Camera access is required..." | Your browser blocked camera permission — click the camera icon in the address bar and allow it, then click "Try Again." |
 | Hand tracking never shows landmarks | Check your browser console — MediaPipe scripts load from a CDN (`index.html`), so you need an internet connection the first time, even though the app runs locally. |
 | `unable to open database file` on backend startup | Make sure you're running `python app.py` from inside `backend/`, and that the `backend/database/` folder exists (it's created automatically, but antivirus/permissions can occasionally block it). |
 | Predictions look random / low accuracy | You're in demo mode (check `GET /api/model-status`). Train and add a real model per `backend/MODEL_SETUP.md`. |
-| CORS errors in the browser console | Check `CORS_ORIGINS` in `backend/.env` matches the URL your frontend actually runs on (default `http://localhost:5173`). |
+| CORS errors in the browser console | Check `CORS_ORIGINS` in `backend/.env` contains the exact public frontend URL, including `https://` and the port if applicable. Separate multiple origins with commas. |
 | `pip install` fails on `mediapipe`/`opencv-python` | Those are commented out in `requirements.txt` — they're only needed if you build a Python-side video pipeline. The default browser-based pipeline doesn't need them. |
 
 ---
